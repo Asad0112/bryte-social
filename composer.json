@@ -1,0 +1,17 @@
+{
+    "name": "php/social_brytead",
+    "autoload": {
+        "psr-4": {
+            "Php\\SocialBrytead\\": "src/",
+            "Php\\FacebookAuth\\": "src/",
+            "Php\\TwitterAuth\\": "src/",
+            "Php\\Social\\": "src/",
+            "Php\\Router\\": "src/",
+            "Php\\Controllers\\": "src/Controllers/",
+            "Php\\Helpers\\": "src/Helpers/"
+        }
+    },
+    "require": {
+        "facebook/graph-sdk": "^5.1"
+    }
+}
