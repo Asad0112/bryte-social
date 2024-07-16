@@ -94,7 +94,7 @@ class Social
         $data = json_decode(file_get_contents($filename), true);
 
         if (array_key_exists($platform, $data) && isset($data[$platform]['access_token'])) {
-            return $data[$platform]['access_token'][0]; // getting the first access token for now.
+            return $data[$platform]['access_token'][count($data[$platform]['access_token']) -1 ]; // getting the latest access token for now.
         } else {
             throw new Exception('Access token not found in file.');
         }
