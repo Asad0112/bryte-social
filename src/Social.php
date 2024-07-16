@@ -18,12 +18,17 @@ class Social
                 $accessToken = self::getAccessTokenFromFile('facebook',$uuid);
                 $response = $fb->post('/me/feed', ['message' => $post], $accessToken);
                 return $response->getGraphNode();
+            } else if($platform == 'twitter') {
+                $twitterAuth = new TwitterAuth();
+                $twitterConfig = Bryteads::getTwitterClient();
+                $url = $twitterConfig['api_base_url'].'/tweets';
+                $data = [
+                    'text' => $post
+                ];
+                return $twitterAuth->makeApiRequest($url, 'POST', $data);
             }
-        } catch(FacebookResponseException $e) {
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
-        } catch(FacebookSDKException $e) {
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
+        } catch(Exception $e) {
+            echo 'Exception: ' . $e->getMessage(). ' '. $e->getLine(). ' '. $e->getFile();
             exit;
         }
     }
@@ -36,11 +41,28 @@ class Social
                 $response = $fb->get('/me/posts', $accessToken);
                 return $response->getDecodedBody(); // This will return the posts in an associative array
             }
-        } catch(FacebookResponseException $e) {
-            echo 'Graph returned an error: ' . $e->getMessage();
+        } catch(Exception $e) {
+            echo 'Exception: ' . $e->getMessage(). ' '. $e->getLine(). ' '. $e->getFile();
             exit;
-        } catch(FacebookSDKException $e) {
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
+        }
+    }
+
+    public static function fetchUserDetails($platform, $uuid) {
+        try {
+            if($platform == 'facebook') {
+                $fb = Bryteads::getFacebookClient();
+                $accessToken = self::getAccessTokenFromFile('facebook',$uuid);
+                $response = $fb->get('/me', $accessToken);
+                return $response->getDecodedBody();
+            } else if($platform == 'twitter') {
+                $twitterAuth = new TwitterAuth();
+                $twitterConfig =  Bryteads::getTwitterClient();
+                $url = $twitterConfig['api_base_url'].'/users/me';
+                $userProfile = $twitterAuth->makeApiRequest($url);
+                return $userProfile['data'];
+            }
+        } catch(Exception $e) {
+            echo 'Exception: ' . $e->getMessage(). ' '. $e->getLine(). ' '. $e->getFile();
             exit;
         }
     }

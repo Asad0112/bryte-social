@@ -75,30 +75,14 @@ class TwitterAuth {
         }
     }
 
-    private function makeApiRequest($url, $method = 'GET', $data = null) {
+    public function makeApiRequest($url, $method = 'GET', $data = null) {
         session_start();
         $accessToken = Social::getAccessTokenFromFile('twitter', getenv('USER_UUID'));
 
         $response = CurlHelper::call($url, $method, json_encode($data), $accessToken);
         return json_decode($response, true);
     }
-
-    public function getUserProfile() {
-        $twitterConfig = Bryteads::getTwitterClient();
-        $url = $twitterConfig['api_base_url'].'/users/me';
-        $userProfile = $this->makeApiRequest($url);
-        return $userProfile['data'];
-    }
-
-    public function postTweet($message) {
-        $twitterConfig = Bryteads::getTwitterClient();
-        $url = $twitterConfig['api_base_url'].'/tweets';
-        $data = [
-            'text' => $message
-        ];
-        return $this->makeApiRequest($url, 'POST', $data);
-    }
-
+    
     public static function refreshAccessToken() {
         session_start();
         $twitterConfig = Bryteads::getTwitterClient();

@@ -2,6 +2,7 @@
 namespace Php\Controllers;
 
 use Exception;
+use Php\Social\Social;
 use Php\Social\TwitterAuth;
 
 class TwitterController {
@@ -12,18 +13,6 @@ class TwitterController {
         if (isset($_GET['code'])) {
             try {
                 $accessToken = $twitterAuth->handleCallback($_GET['code']);
-
-
-                $asad =  $twitterAuth->getUserProfile();
-
-
-
-                // $asad1 = $twitterAuth->postTweet('Hello World! This is Testing Tweet 3 from Asad!');
-
-                echo "<pre/>";
-                print_R($asad);
-                die;
-            
                 echo "Access Token: " . $accessToken . '<br><br>';    
 
             } catch (Exception $e) {
