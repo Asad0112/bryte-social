@@ -5,6 +5,7 @@
             "Php\\SocialBrytead\\": "src/",
             "Php\\FacebookAuth\\": "src/",
             "Php\\TwitterAuth\\": "src/",
+            "Php\\LinkedInAuth\\": "src/",
             "Php\\Social\\": "src/",
             "Php\\Router\\": "src/",
             "Php\\Controllers\\": "src/Controllers/",

@@ -21,7 +21,8 @@ class FacebookAuth
 
     public function getLoginUrl($redirectUrl)
     {
-        return $this->helper->getLoginUrl($redirectUrl, $this->permissions);
+        $scopes = array_map('trim', explode(',', getenv('FACEBOOK_SCOPE')));
+        return $this->helper->getLoginUrl($redirectUrl, $scopes);
     }
 
     public function handleCallback()

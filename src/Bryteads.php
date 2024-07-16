@@ -29,5 +29,13 @@ class Bryteads
         $twitterConfig = $config['twitter'];
         
         return $twitterConfig;
-    }       
+    }
+
+    public static function getLinkedInClient(){
+        $config = include __DIR__ . '/../src/config/services.php';          
+        
+        $linkedinConfig = $config['linkedin'];
+        
+        return $linkedinConfig;
+    }   
 }

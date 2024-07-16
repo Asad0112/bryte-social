@@ -10,15 +10,19 @@ loadEnv(__DIR__ . '/.env');
 
 use Php\Router\Router;
 use Php\Controllers\FacebookController;
+use Php\Controllers\LinkedInController;
 use Php\Controllers\TwitterController;
 
 $router = new Router();
 
-// Define routes
+# Route for the Facebook Login
 $router->add('facebook/login', [new FacebookController(), 'handleRequest']);
 
+# Route for the Twitter Login
 $router->add('twitter/login', [new TwitterController(), 'handleRequest']);
-$router->add('twitter/callback', [new TwitterController(), 'handleCallback']);
+
+# Route for the LinkedIn Login
+$router->add('linkedin/login', [new LinkedInController(), 'handleRequest']);
 
 // Dispatch the request to the appropriate handler
 $router->dispatch();
