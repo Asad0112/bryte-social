@@ -3,7 +3,6 @@ namespace Php\Social;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Abraham\TwitterOAuth\TwitterOAuth;
 use Exception;
 use Php\Helpers\CurlHelper;
 use Php\SocialBrytead\Bryteads;
@@ -66,6 +65,10 @@ class TwitterAuth {
             $_SESSION['twitter_access_token'] = $responseArray['access_token'];
             $_SESSION['twitter_refresh_token'] = $responseArray['refresh_token'];
             $_SESSION['token_expires_at'] = time() + $responseArray['expires_in'];
+
+            // Save the updated access token to a JSON file with a UUID
+            Social::saveAccessTokenToFile('twitter', $_SESSION['twitter_access_token'], getenv('USER_UUID'));
+
             return $responseArray['access_token'];
         } else {
             throw new Exception('Access Token not received. Response: ' . json_encode($responseArray));
@@ -74,7 +77,7 @@ class TwitterAuth {
 
     private function makeApiRequest($url, $method = 'GET', $data = null) {
         session_start();
-        $accessToken = $_SESSION['twitter_access_token'];
+        $accessToken = Social::getAccessTokenFromFile('twitter', getenv('USER_UUID'));
 
         $response = CurlHelper::call($url, $method, json_encode($data), $accessToken);
         return json_decode($response, true);
@@ -117,6 +120,16 @@ class TwitterAuth {
         if (isset($responseArray['access_token'])) {
             $_SESSION['twitter_access_token'] = $responseArray['access_token'];
             $_SESSION['twitter_refresh_token'] = $responseArray['refresh_token'];
+            
+            $filename = __DIR__ . '/../storage/' . getenv('USER_UUID') . '.json';
+
+            if (!file_exists($filename)) {
+                throw new Exception('Access token file does not exist.');
+            }
+
+            // Save the updated access token to a JSON file with a UUID - Test Pending
+            Social::saveAccessTokenToFile('twitter', $_SESSION['twitter_access_token'], getenv('USER_UUID'));
+            
             return $responseArray['access_token'];
         } else {
             throw new Exception('Access Token not received. Response: ' . json_encode($responseArray));
