@@ -7,13 +7,17 @@ use Php\LinkedInAuth\LinkedInAuth;
 class LinkedInController {
 
     public function handleRequest() {
-        session_start();
+
+        // session_start();
         $linkedinAuth = new LinkedInAuth();
 
         if (isset($_GET['code'])) {
             try {
                 $accessToken = $linkedinAuth->handleCallback($_GET['code']);
                 echo "Access Token: " . $accessToken . '<br><br>';
+                $asad = $linkedinAuth->getLinkedInUser();
+                echo "<pre/>";
+                print_R($asad); die;
             } catch (Exception $e) {
                 echo 'Exception: ' . $e->getMessage();
             }
